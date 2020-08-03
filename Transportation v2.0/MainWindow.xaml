@@ -59,6 +59,7 @@
                 <DataGridTextColumn IsReadOnly="False" Header="Город С" Binding="{Binding Path=City}" ></DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="False" Header="Город До" Binding="{Binding Path=City_before}"></DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="False" Header="Номер телефона" Binding="{Binding Path= Number_Telephone}" Width="*"></DataGridTextColumn>
+            
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
