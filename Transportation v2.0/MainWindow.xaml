@@ -10,20 +10,24 @@
     <Window.Resources>
         <CollectionViewSource  x:Key="cvsTask"  Filter="CollectionViewSource_Filter">
             <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription  PropertyName="Id" Direction="Ascending" > </scm:SortDescription>
+                <scm:SortDescription  PropertyName="Id" Direction="Ascending" ></scm:SortDescription>
                 <scm:SortDescription PropertyName="Name" Direction="Descending"></scm:SortDescription>
                 <scm:SortDescription PropertyName="Surname" Direction="Ascending"></scm:SortDescription>
                 <scm:SortDescription PropertyName="Date" Direction="Ascending"></scm:SortDescription>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </Window.Resources>
-   
+
     <Grid >
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Menu Grid.ColumnSpan="3" Margin="0,0,0,36" Grid.RowSpan="2">
             <MenuItem Header="Файл">
                 <MenuItem Header="Открыть"></MenuItem>
@@ -63,5 +67,6 @@
             
             </DataGrid.Columns>
         </DataGrid>
+        <TextBlock Grid.Row="1" Text="Поиск" Margin="756,13,88,-13"/>
     </Grid>
 </Window>
