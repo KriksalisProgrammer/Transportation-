@@ -1,0 +1,65 @@
+﻿<Window x:Class="Transportation_v2._0.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Transportation_v2._0"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="880" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource  x:Key="cvsTask"  Filter="CollectionViewSource_Filter">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription  PropertyName="Id" Direction="Ascending" > </scm:SortDescription>
+                <scm:SortDescription PropertyName="Name" Direction="Descending"></scm:SortDescription>
+                <scm:SortDescription PropertyName="Surname" Direction="Ascending"></scm:SortDescription>
+                <scm:SortDescription PropertyName="Date" Direction="Ascending"></scm:SortDescription>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+   
+    <Grid >
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Grid.ColumnSpan="3" Margin="0,0,0,36" Grid.RowSpan="2">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Открыть"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Сохранить"></MenuItem>
+                <MenuItem Header="Сохранить как"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Печать"></MenuItem>
+                <MenuItem Header="Закрыть"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Настройки"></MenuItem>
+            <MenuItem Header="О программе"></MenuItem>
+        </Menu>
+        <DataGrid  Sorting="MainTable_Sorting" ItemsSource="{Binding Source={StaticResource cvsTask}}" AlternatingRowBackground="Gray" GridLinesVisibility="All" BorderBrush="White" FontSize="16"  ScrollViewer.CanContentScroll="True" 
+		ScrollViewer.VerticalScrollBarVisibility="Auto"  CanUserSortColumns="True"
+		ScrollViewer.HorizontalScrollBarVisibility="Auto"   Margin="5,30,250,20" x:Name="MainTable" AutoGenerateColumns="False"  Grid.Row="1"   >
+            <DataGrid.Columns >
+                <DataGridTextColumn IsReadOnly="False" Header="ID" Binding="{Binding Path= Id}" ></DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="False" SortDirection="Ascending" Header="Имя" Binding="{Binding Path= Name}" ></DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="False" Header="Фамилия" Binding="{Binding Path= Surname}"  ></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Дата поездки" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Date}"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding Date}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn IsReadOnly="False" Header="Город С" Binding="{Binding Path=City}" ></DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="False" Header="Город До" Binding="{Binding Path=City_before}"></DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="False" Header="Номер телефона" Binding="{Binding Path= Number_Telephone}" Width="*"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
