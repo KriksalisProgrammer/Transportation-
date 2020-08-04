@@ -39,15 +39,15 @@
         </Menu>
         <DataGrid  Sorting="MainTable_Sorting" ItemsSource="{Binding Source={StaticResource cvsTask}}" AlternatingRowBackground="Gray" GridLinesVisibility="All" BorderBrush="White" FontSize="16"  ScrollViewer.CanContentScroll="True" 
 		ScrollViewer.VerticalScrollBarVisibility="Auto"  CanUserSortColumns="True"
-		ScrollViewer.HorizontalScrollBarVisibility="Auto"   Margin="5,30,250,20" x:Name="MainTable" AutoGenerateColumns="False"  Grid.Row="1"   >
+		ScrollViewer.HorizontalScrollBarVisibility="Auto"   Margin="5,30,230,20" x:Name="MainTable" AutoGenerateColumns="False"  Grid.Row="1"   >
             <DataGrid.Columns >
                 <DataGridTextColumn IsReadOnly="False" Header="ID" Binding="{Binding Path= Id}" ></DataGridTextColumn>
-                <DataGridTextColumn IsReadOnly="False" SortDirection="Ascending" Header="Имя" Binding="{Binding Path= Name}" ></DataGridTextColumn>
+                <DataGridTextColumn IsReadOnly="False"  Header="Имя" Binding="{Binding Path= Name}" ></DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="False" Header="Фамилия" Binding="{Binding Path= Surname}"  ></DataGridTextColumn>
                 <DataGridTemplateColumn Header="Дата поездки" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Date}"></TextBlock>
+                            <TextBlock Text="{Binding Path=Date,StringFormat={}{0:d}}"></TextBlock>
                     
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
