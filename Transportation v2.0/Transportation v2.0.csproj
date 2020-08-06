@@ -8,11 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icons8-фургон-32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Icon\" />
+    <Resource Include="icons8-фургон-32.png" />
+    <Resource Include="Icon\icons8-фургон-32.png" />
   </ItemGroup>
 
 </Project>

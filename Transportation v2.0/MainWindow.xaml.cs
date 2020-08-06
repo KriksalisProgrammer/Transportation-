@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +22,92 @@ using Transportation_v2._0.IO_service;
 
 namespace Transportation_v2._0
 {
+
+
+    public partial class MainWindow : Window
+    {
+
+        private readonly string _PATH = $"{Environment.CurrentDirectory}\\PersonModel.json";
+        private BindingList<PersonTransportation> person;
+        private IO IOfiles;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            IOfiles = new IO(_PATH);
+            try
+            {
+                person = IOfiles.LoadingData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Close();
+            }
+            MainTable.ItemsSource = person;
+            person.ListChanged += Person_ListChanged;
+
+        }
+
+        private void Person_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            if (e.ListChangedType == ListChangedType.ItemAdded || e.ListChangedType == ListChangedType.ItemDeleted || e.ListChangedType == ListChangedType.ItemChanged)
+            {
+                try
+                {
+                    IOfiles.SaveDate(sender);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+
+
+
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            using (StreamWriter writer = File.CreateText(_PATH))
+            {
+                string otput = JsonConvert.SerializeObject(MainTable.ItemsSource);
+                writer.Write(otput);
+            }
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Хотите ли вы закрыть приложение?", "Закрытие", MessageBoxButton.YesNo,MessageBoxImage.Question);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    Close();
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.PrintDialog Printdlg = new System.Windows.Controls.PrintDialog();
+            if ((bool)Printdlg.ShowDialog().GetValueOrDefault())
+            {
+                System.Windows.Size pageSize = new System.Windows.Size(Printdlg.PrintableAreaWidth, Printdlg.PrintableAreaHeight);
+                MainTable.Measure(pageSize);
+                MainTable.Arrange(new Rect(5, 5, pageSize.Width, pageSize.Height));
+                Printdlg.PrintVisual(MainTable, Title);
+            }
+        }
+    }
     public static class DataGridTextSearch
     {
 
@@ -67,77 +157,5 @@ namespace Transportation_v2._0
         {
             return null;
         }
-    }
-    public partial class MainWindow : Window
-    {
-
-        private readonly string _PATH = $"{Environment.CurrentDirectory}\\PersonModel.json";
-        private BindingList<PersonTransportation> person;
-        private IO IOfiles;
-
-        public MainWindow()
-        {
-            InitializeComponent();
-
-
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            IOfiles = new IO(_PATH);
-            try
-            {
-                person = IOfiles.LoadingData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                Close();
-            }
-            MainTable.ItemsSource = person;
-            person.ListChanged += Person_ListChanged;
-
-        }
-
-        private void Person_ListChanged(object sender, ListChangedEventArgs e)
-        {
-            if (e.ListChangedType == ListChangedType.ItemAdded || e.ListChangedType == ListChangedType.ItemDeleted || e.ListChangedType == ListChangedType.ItemChanged)
-            {
-                try
-                {
-                    IOfiles.SaveDate(sender);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
-
-        private void MainTable_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
-
-        }
-
-        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
-        {
-        }
-
-        private void MainTable_Sorting(object sender, DataGridSortingEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-       
-
     }
 }

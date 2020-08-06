@@ -13,6 +13,10 @@ namespace Transportation_v2._0.IO_service
     class IO
     {
         private readonly string PATH;
+        public IO()
+        {
+
+        }
         public IO(string path)
         {
             PATH = path;

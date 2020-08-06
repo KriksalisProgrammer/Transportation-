@@ -5,10 +5,11 @@
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Transportation_v2._0" 
+        xmlns:local1="clr-namespace:Transportation_v2._0.Searh"
         mc:Ignorable="d"
-        Title="Перевозки" Height="550" Width="880" Loaded="Window_Loaded">
+        Title="Перевозки" Height="550" Width="880" Loaded="Window_Loaded" Icon="Icon/icons8-фургон-32.png" WindowStyle="SingleBorderWindow">
     <Window.Resources>
-        <CollectionViewSource  x:Key="cvsTask"  Filter="CollectionViewSource_Filter">
+        <CollectionViewSource  x:Key="cvsTask"  >
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription  PropertyName="Id" Direction="Ascending" ></scm:SortDescription>
                 <scm:SortDescription PropertyName="Name" Direction="Descending"></scm:SortDescription>
@@ -17,28 +18,33 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </Window.Resources>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo/>
+    </Window.TaskbarItemInfo>
     <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Menu Grid.ColumnSpan="3" Margin="0,0,0,36" Grid.RowSpan="2">
+        <Menu Grid.ColumnSpan="4" Margin="0,0,0,36" Grid.RowSpan="2">
             <MenuItem Header="Файл">
                 <MenuItem Header="Открыть"></MenuItem>
                 <Separator></Separator>
-                <MenuItem Header="Сохранить"></MenuItem>
-                <MenuItem Header="Сохранить как"></MenuItem>
+                <MenuItem Header="Сохранить" Click="MenuItem_Click"></MenuItem>
                 <Separator></Separator>
-                <MenuItem Header="Печать"></MenuItem>
-                <MenuItem Header="Закрыть"></MenuItem>
+                <MenuItem Header="Печать" Click="MenuItem_Click_2"></MenuItem>
+                <MenuItem Header="Закрыть" Click="MenuItem_Click_1"></MenuItem>
             </MenuItem>
             <MenuItem Header="Настройки"></MenuItem>
             <MenuItem Header="О программе"></MenuItem>
         </Menu>
         <DataGrid local:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding PersonTransportation}" AlternatingRowBackground="Gray" GridLinesVisibility="All" BorderBrush="White" FontSize="16"  ScrollViewer.CanContentScroll="True" 
 		ScrollViewer.VerticalScrollBarVisibility="Auto"  CanUserSortColumns="True"
-		ScrollViewer.HorizontalScrollBarVisibility="Auto"   Margin="5,30,230,20" x:Name="MainTable" AutoGenerateColumns="False"  Grid.Row="1"   >
+		ScrollViewer.HorizontalScrollBarVisibility="Auto"   Margin="4,30,230,20" x:Name="MainTable" AutoGenerateColumns="False"  Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="1"   >
             <DataGrid.Columns >
                 <DataGridTextColumn IsReadOnly="False" Header="ID" Binding="{Binding Path= Id}" ></DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="False"  Header="Имя" Binding="{Binding Path= Name}" ></DataGridTextColumn>
@@ -79,8 +85,30 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
-        <TextBox Name="SearchBox" Margin="650,60,66,430" Grid.RowSpan="2" TextChanged="TextBox_TextChanged"/>
-        <Button Click="Button_Click" Margin="816,60,8,430" Grid.RowSpan="2">Поиск</Button>
-        
+        <TextBox  Name="SearchBox" Margin="655,60,19,430" Grid.RowSpan="2" >
+            <TextBox.Style>
+                <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                    <Style.Resources>
+                        <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                            <VisualBrush.Visual>
+                                <Label Content="Поиск" Foreground="Black" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Style.Resources>
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="White" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
     </Grid>
 </Window>
