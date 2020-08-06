@@ -4,22 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Transportation_v2._0"
+        xmlns:local="clr-namespace:Transportation_v2._0" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="880" Loaded="Window_Loaded">
+        Title="Перевозки" Height="550" Width="880" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource  x:Key="cvsTask"  Filter="CollectionViewSource_Filter">
             <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription  PropertyName="Id" Direction="Ascending" > </scm:SortDescription>
+                <scm:SortDescription  PropertyName="Id" Direction="Ascending" ></scm:SortDescription>
                 <scm:SortDescription PropertyName="Name" Direction="Descending"></scm:SortDescription>
                 <scm:SortDescription PropertyName="Surname" Direction="Ascending"></scm:SortDescription>
                 <scm:SortDescription PropertyName="Date" Direction="Ascending"></scm:SortDescription>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </Window.Resources>
-   
     <Grid >
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -37,7 +36,7 @@
             <MenuItem Header="Настройки"></MenuItem>
             <MenuItem Header="О программе"></MenuItem>
         </Menu>
-        <DataGrid  Sorting="MainTable_Sorting" ItemsSource="{Binding Source={StaticResource cvsTask}}" AlternatingRowBackground="Gray" GridLinesVisibility="All" BorderBrush="White" FontSize="16"  ScrollViewer.CanContentScroll="True" 
+        <DataGrid local:DataGridTextSearch.SearchValue="{Binding ElementName=SearchBox, Path=Text, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding PersonTransportation}" AlternatingRowBackground="Gray" GridLinesVisibility="All" BorderBrush="White" FontSize="16"  ScrollViewer.CanContentScroll="True" 
 		ScrollViewer.VerticalScrollBarVisibility="Auto"  CanUserSortColumns="True"
 		ScrollViewer.HorizontalScrollBarVisibility="Auto"   Margin="5,30,230,20" x:Name="MainTable" AutoGenerateColumns="False"  Grid.Row="1"   >
             <DataGrid.Columns >
@@ -48,7 +47,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Path=Date,StringFormat={}{0:d}}"></TextBlock>
-                    
+
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -60,8 +59,28 @@
                 <DataGridTextColumn IsReadOnly="False" Header="Город С" Binding="{Binding Path=City}" ></DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="False" Header="Город До" Binding="{Binding Path=City_before}"></DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="False" Header="Номер телефона" Binding="{Binding Path= Number_Telephone}" Width="*"></DataGridTextColumn>
-            
             </DataGrid.Columns>
+            <DataGrid.Resources>
+                <local:SearchValueConverter x:Key="SearchValueConverter" />
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="local:DataGridTextSearch.IsTextMatch">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource SearchValueConverter}">
+                                <Binding RelativeSource="{RelativeSource Self}" Path="Content.Text" />
+                                <Binding RelativeSource="{RelativeSource Self}" Path="(local:DataGridTextSearch.SearchValue)" />
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="local:DataGridTextSearch.IsTextMatch" Value="True">
+                            <Setter Property="Background" Value="Orange" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
         </DataGrid>
+        <TextBox Name="SearchBox" Margin="650,60,66,430" Grid.RowSpan="2" TextChanged="TextBox_TextChanged"/>
+        <Button Click="Button_Click" Margin="816,60,8,430" Grid.RowSpan="2">Поиск</Button>
+        
     </Grid>
 </Window>
